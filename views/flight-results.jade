@@ -8,9 +8,20 @@ block content
     ul.list-group
       each flightTicket in flightTickets
         li.list-group-item
-          div De: #{flightTicket.from}
-          div Para: #{flightTicket.to}
-          div Ida: #{flightTicket.departureDate}
-          div Volta: #{flightTicket.returnDate}
-          div Valor: R$#{flightTicket.price}
+          .row
+            span.col-xs-1.text-right De:
+            span.col-xs-4= flightTicket.from
+          .row
+            span.col-xs-1.text-right Para:
+            span.col-xs-4= flightTicket.to
+          .row
+            span.col-xs-1.text-right Ida:
+            span.col-xs-4= flightTicket.departureDate
+          .row
+            span.col-xs-1.text-right Volta:
+            span.col-xs-4= flightTicket.returnDate
+          .row
+            span.col-xs-1.text-right Valor:
+            span.col-xs-4 R$#{flightTicket.price}
+
   a.btn.btn-default(href="/") Nova busca
