@@ -17,7 +17,7 @@ router.post('/flights', function (req, res) {
   var flightTicketSearcher = new FlightTicketSearcher();
 
   var errors = flightTicketSearcher.validateFields(req.body);
-  if (errors) {
+  if (errors && errors.length) {
     req.flash('errors', _(errors).indexBy('field'));
     res.redirect('/');
     return;
