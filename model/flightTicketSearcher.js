@@ -1,6 +1,11 @@
 var _ = require('underscore');
 var moment = require('moment');
 
+const TICKET_BASE_PRICE = 200;
+const DISCOUNT_FACTOR_3_MONTHS = 10;
+const DISCOUNT_FACTOR_6_MONTHS = 20;
+const DISCOUNT_FACTOR_QUANTITY = 2;
+
 function FlightTicketSearcher() {
   this._validCities = ['Florianópolis', 'Curitiba', 'Porto Alegre', 'Rio de Janeiro', 'São Paulo', 'Belo Horizonte', 'Vitória'];
 }
@@ -9,12 +14,30 @@ FlightTicketSearcher.prototype = {
   constructor: FlightTicketSearcher,
 
   getAvailableFlightTickets: function (searchParams) {
+    var quantity = parseInt(searchParams.quantity);
+    var totalPrice = TICKET_BASE_PRICE * quantity;
+    var discount = (quantity - 1) * DISCOUNT_FACTOR_QUANTITY;
+    var departureDate = this._parseDate(searchParams.departureDate);
+
+    // console.log('Total price: ' + totalPrice);
+    // console.log('Discount quantity: ' + discount);
+
+    if(this._getTodayWithoutHours().add(6, 'months').isSameOrBefore(departureDate)) {
+      discount += DISCOUNT_FACTOR_6_MONTHS;
+      // console.log('...plus discount 6 months: ' + discount);
+    } else if(this._getTodayWithoutHours().add(3, 'months').isSameOrBefore(departureDate)) {
+      // console.log('...plus discount 3 months: ' + discount);
+      discount += DISCOUNT_FACTOR_3_MONTHS;
+    }
+
+    // console.log('Final price: ' + (totalPrice - (totalPrice * (discount/100))));
+
     var flightTickets = [{
       from: searchParams.from,
       to: searchParams.to,
       departureDate: searchParams.departureDate,
       returnDate: searchParams.returnDate,
-      price: 200 * parseInt(searchParams.quantity)
+      price: totalPrice - (totalPrice * (discount/100))
     }];
     return flightTickets;
   },
@@ -60,7 +83,7 @@ FlightTicketSearcher.prototype = {
         return errors;
       }
     } else {
-      var today = moment().hours(0).minutes(0).seconds(0).milliseconds(0);
+      var today = this._getTodayWithoutHours();
       if (parsedDate.isSameOrBefore(today)) {
         errors.push({field: fieldName, message: 'A data deve posterior ao dia de hoje.'});
         return errors;
@@ -74,6 +97,10 @@ FlightTicketSearcher.prototype = {
     var parsedDate = /(\d\d)\/(\d\d)\/(\d\d\d\d)/g.exec(date);
     if (!parsedDate) return null;
     return moment(date, 'DD/MM/YYYY');
+  },
+
+  _getTodayWithoutHours: function() {
+    return moment().hours(0).minutes(0).seconds(0).milliseconds(0);
   }
 };
 
