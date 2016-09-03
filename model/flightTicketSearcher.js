@@ -40,18 +40,25 @@ FlightTicketSearcher.prototype = {
   validateFields: function (searchParams) {
     var errors = [];
     this._validateCity(errors, searchParams.from, 'from');
-    this._validateCity(errors, searchParams.to, 'to');
+    this._validateCity(errors, searchParams.to, 'to', searchParams.from);
     this._validateDate(errors, searchParams.departureDate, 'departureDate');
     this._validateDate(errors, searchParams.returnDate, 'returnDate', this._parseDate(searchParams.departureDate));
     return errors;
   },
 
-  _validateCity: function (errors, city, fieldName) {
+  _validateCity: function (errors, city, fieldName, rejectedCity) {
     if (!city || city === '') errors.push({field: fieldName, message: 'Campo obrigatório.'});
-    else if (!_(COVERED_CITIES).contains(city)) errors.push({
-      field: fieldName,
-      message: 'Somente capitais da região Sul e Sudeste do Brasil são atendidas pela companhia aérea.'
-    });
+    else if (!_(COVERED_CITIES).contains(city)) {
+      errors.push({
+        field: fieldName,
+        message: 'Somente capitais da região Sul e Sudeste do Brasil são atendidas pela companhia aérea.'
+      });
+    } else if (city === rejectedCity) {
+      errors.push({
+        field: fieldName,
+        message: 'A cidade de destino deve ser diferente da cidade de origem.'
+      });
+    }
     return errors;
   },
 
@@ -72,7 +79,7 @@ FlightTicketSearcher.prototype = {
     }
     if (relativeDate) {
       if (relativeDate.isValid() && parsedDate.isBefore(relativeDate)) {
-        errors.push({field: fieldName, message: 'A data deve ser maior que a primeira data informada.'});
+        errors.push({field: fieldName, message: 'A data de volta deve ser maior do que a data de ida.'});
         return errors;
       }
     } else {
