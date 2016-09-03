@@ -5,9 +5,9 @@ const TICKET_BASE_PRICE = 200;
 const DISCOUNT_FACTOR_3_MONTHS = 10;
 const DISCOUNT_FACTOR_6_MONTHS = 20;
 const DISCOUNT_FACTOR_QUANTITY = 2;
+const COVERED_CITIES = ['Florianópolis', 'Curitiba', 'Porto Alegre', 'Rio de Janeiro', 'São Paulo', 'Belo Horizonte', 'Vitória'];
 
 function FlightTicketSearcher() {
-  this._validCities = ['Florianópolis', 'Curitiba', 'Porto Alegre', 'Rio de Janeiro', 'São Paulo', 'Belo Horizonte', 'Vitória'];
 }
 
 FlightTicketSearcher.prototype = {
@@ -39,18 +39,16 @@ FlightTicketSearcher.prototype = {
 
   validateFields: function (searchParams) {
     var errors = [];
-
     this._validateCity(errors, searchParams.from, 'from');
     this._validateCity(errors, searchParams.to, 'to');
     this._validateDate(errors, searchParams.departureDate, 'departureDate');
     this._validateDate(errors, searchParams.returnDate, 'returnDate', this._parseDate(searchParams.departureDate));
-
     return errors;
   },
 
   _validateCity: function (errors, city, fieldName) {
     if (!city || city === '') errors.push({field: fieldName, message: 'Campo obrigatório.'});
-    else if (!_(this._validCities).contains(city)) errors.push({
+    else if (!_(COVERED_CITIES).contains(city)) errors.push({
       field: fieldName,
       message: 'Somente capitais da região Sul e Sudeste do Brasil são atendidas pela companhia aérea.'
     });
