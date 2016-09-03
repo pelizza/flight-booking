@@ -19,25 +19,20 @@ FlightTicketSearcher.prototype = {
     var discount = (quantity - 1) * DISCOUNT_FACTOR_QUANTITY;
     var departureDate = this._parseDate(searchParams.departureDate);
 
-    // console.log('Total price: ' + totalPrice);
-    // console.log('Discount quantity: ' + discount);
-
     if(this._getTodayWithoutHours().add(6, 'months').isSameOrBefore(departureDate)) {
       discount += DISCOUNT_FACTOR_6_MONTHS;
-      // console.log('...plus discount 6 months: ' + discount);
     } else if(this._getTodayWithoutHours().add(3, 'months').isSameOrBefore(departureDate)) {
-      // console.log('...plus discount 3 months: ' + discount);
       discount += DISCOUNT_FACTOR_3_MONTHS;
     }
 
-    // console.log('Final price: ' + (totalPrice - (totalPrice * (discount/100))));
+    var finalPrice = totalPrice - (totalPrice * (discount/100));
 
     var flightTickets = [{
       from: searchParams.from,
       to: searchParams.to,
       departureDate: searchParams.departureDate,
       returnDate: searchParams.returnDate,
-      price: totalPrice - (totalPrice * (discount/100))
+      price: finalPrice
     }];
     return flightTickets;
   },
