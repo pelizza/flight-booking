@@ -3,39 +3,32 @@ extends layout
 block content
   h1 Agile Airlines
   p Bem vindo a Agile Airlines! Onde cada vôo é uma entrega de valor :)
-  form(action='/flights', method='post')
-    .control-group(class=errors && errors['from'] ? 'error' : '')
-      label.control-label(for='from') De:
-      .controls
-        input#from(type='text', name='from', value=values ? values['from'] : undefined)
+  form(action='/flights', method='post', style='width: 800px; margin: auto; border: 1px solid lightgray; border-radius: 3px; padding: 12px; margin-top: 25px')
+    .row
+      .form-group.col-xs-6(class=errors && errors['from'] ? 'has-error' : '')
+        label.control-label(for='from') De:
+        input.form-control#from(type='text', name='from', placeholder='Ex: Florianópolis', value=values ? values['from'] : undefined)
         if errors && errors['from']
-          span.help-inline= errors['from'].message
-
-    .control-group(class=errors && errors['to'] ? 'error' : '')
-      label.control-label(for='to') Para:
-      .controls
-        input#to(type='text', name='to', value=values ? values['to'] : undefined)
+          span.help-block= errors['from'].message
+      .form-group.col-xs-6(class=errors && errors['to'] ? 'has-error' : '')
+        label.control-label(for='to') Para:
+        input.form-control#to(type='text', name='to', placeholder='Ex: Porto Alegre', value=values ? values['to'] : undefined)
         if errors && errors['to']
-          span.help-inline= errors['to'].message
-
-    .control-group(class=errors && errors['departureDate'] ? 'error' : '')
-      label.control-label(for='departureDate') Ida:
-      .controls
-        input#departureDate(type='text', name='departureDate', value=values ? values['departureDate'] : undefined)
+          span.help-block= errors['to'].message
+    .row
+      .form-group.col-xs-3(class=errors && errors['departureDate'] ? 'has-error' : '')
+        label.control-label(for='departureDate') Ida:
+        input.form-control#departureDate(type='text', name='departureDate', placeholder='Ex: 30/10/2016', value=values ? values['departureDate'] : undefined)
         if errors && errors['departureDate']
-          span.help-inline= errors['departureDate'].message
-
-    .control-group(class=errors && errors['returnDate'] ? 'error' : '')
-      label.control-label(for='returnDate') Volta:
-      .controls
-        input#returnDate(type='text', name='returnDate', value=values ? values['returnDate'] : undefined)
+          span.help-block= errors['departureDate'].message
+      .form-group.col-xs-3(class=errors && errors['returnDate'] ? 'has-error' : '')
+        label.control-label(for='returnDate') Volta:
+        input.form-control#returnDate(type='text', name='returnDate', placeholder='Ex: 31/10/2016', value=values ? values['returnDate'] : undefined)
         if errors && errors['returnDate']
-          span.help-inline= errors['returnDate'].message
-
-    .control-group
-      label.control-label(for='quantity') Passageiros:
-      .controls
-        select#quantity(name='quantity')
+          span.help-block= errors['returnDate'].message
+      .form-group.col-xs-2
+        label.control-label(for='quantity') Passageiros:
+        select.form-control#quantity(name='quantity')
           - var n = 1;
           while n <= 15
             option(selected=values && values['quantity'] === (n + '') ? 'selected' : undefined)= n++
