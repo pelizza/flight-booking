@@ -5,16 +5,19 @@ block content
   p Bem vindo a Agile Airlines! Onde cada vôo é uma entrega de valor :)
   form(action='/flights', method='post')
     fieldset
-      label(for='origem') De:
-      input#origem(type='text', name='origem')
+      label(for='from') De:
+      input#from(type='text', name='from')
 
-      label(for='destino') Para:
-      input#destino(type='text', name='destino')
+      label(for='to') Para:
+      input#to(type='text', name='to')
 
-      label(for='ida') Ida:
-      input#ida(type='text', name='ida')
+      label(for='departureDate') Ida:
+      input#departureDate(type='text', name='departureDate')
 
-      label(for='volta') Volta:
-      input#volta(type='text', name='volta')
+      label(for='returnDate') Volta:
+      input#returnDate(type='text', name='returnDate')
+
+      label(for='quantity') Quantidade:
+      input#quantity(type='text', name='quantity')
 
     button.btn.btn-primary(type='submit') Procurar
