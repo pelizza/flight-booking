@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1 Agile Airlines
+  p Bem vindo a Agile Airlines! Onde cada vôo é uma entrega de valor :)
+  form
+    fieldset
+      label(for='origem') De:
+      input#origem(type='text', name='origem')
+
+      label(for='destino') Para:
+      input#destino(type='text', name='destino')
+
+      label(for='ida') Ida:
+      input#ida(type='text', name='ida')
+
+      label(for='volta') Volta:
+      input#volta(type='text', name='volta')
