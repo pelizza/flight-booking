@@ -5,7 +5,7 @@ var util = require('util');
 var _ = require('underscore');
 var FlightTicketSearcher = require('../model/flightTicketSearcher');
 
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
   var errors = req.flash('errors');
   res.render('index', {
     title: 'Agile Airlines - Home',
@@ -13,7 +13,7 @@ router.get('/', function(req, res) {
   });
 });
 
-router.post('/flights', function(req, res) {
+router.post('/flights', function (req, res) {
   var flightTicketSearcher = new FlightTicketSearcher();
 
   var errors = flightTicketSearcher.validateFields(req.body);
