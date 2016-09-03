@@ -3,7 +3,7 @@ extends layout
 block content
   h1 Agile Airlines
   p Bem vindo a Agile Airlines! Onde cada vôo é uma entrega de valor :)
-  form
+  form(action='/flights', method='post')
     fieldset
       label(for='origem') De:
       input#origem(type='text', name='origem')
@@ -16,3 +16,5 @@ block content
 
       label(for='volta') Volta:
       input#volta(type='text', name='volta')
+
+    button.btn.btn-primary(type='submit') Procurar

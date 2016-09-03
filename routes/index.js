@@ -1,12 +1,26 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+function getAvailableFlightTickets(searchParams) {
+  var flightTickets = [{
+    from: 'Florianópolis',
+    to: 'Chapecó',
+    departureDate: new Date(),
+    returnDate: new Date(),
+    price: 200
+  }];
+  return flightTickets;
+}
+
+router.get('/', function(req, res) {
+  res.render('index', { title: 'Agile Airlines - Home' });
 });
-router.get('/flights', function(req, res, next) {
-  res.render('flight-results', {});
+
+router.post('/flights', function(req, res) {
+  res.render('flight-results', {
+    title: 'Agile Airlines - Passagens',
+    flightTickets: getAvailableFlightTickets(req.body)
+  });
 });
 
 module.exports = router;

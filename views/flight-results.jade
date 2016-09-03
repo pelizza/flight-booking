@@ -2,6 +2,14 @@ extends layout
 
 block content
   h1 Passagens Encontradas
-  ul
-    li First
-    li Second
+  if !flightTickets.length
+    div Nenhuma passagem encontrada para os critérios informados :(
+  else
+    ul
+      each flightTicket in flightTickets
+        li
+          div De: #{flightTicket.from}
+          div Para: #{flightTicket.to}
+          div Ida: #{flightTicket.departureDate}
+          div Volta: #{flightTicket.returnDate}
+          div Valor: R$#{flightTicket.price}
