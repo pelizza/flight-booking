@@ -4,20 +4,40 @@ block content
   h1 Agile Airlines
   p Bem vindo a Agile Airlines! Onde cada vôo é uma entrega de valor :)
   form(action='/flights', method='post')
-    fieldset
-      label(for='from') De:
-      input#from(type='text', name='from')
+    .control-group(class=errors && errors['from'] ? 'error' : '')
+      label.control-label(for='from') De:
+      .controls
+        input#from(type='text', name='from')
+        if errors && errors['from']
+          span.help-inline= errors['from'].message
 
-      label(for='to') Para:
-      input#to(type='text', name='to')
+    .control-group(class=errors && errors['to'] ? 'error' : '')
+      label.control-label(for='to') Para:
+      .controls
+        input#to(type='text', name='to')
+        if errors && errors['to']
+          span.help-inline= errors['to'].message
 
-      label(for='departureDate') Ida:
-      input#departureDate(type='text', name='departureDate')
+    .control-group(class=errors && errors['departureDate'] ? 'error' : '')
+      label.control-label(for='departureDate') Ida:
+      .controls
+        input#departureDate(type='text', name='departureDate')
+        if errors && errors['departureDate']
+          span.help-inline= errors['departureDate'].message
 
-      label(for='returnDate') Volta:
-      input#returnDate(type='text', name='returnDate')
+    .control-group(class=errors && errors['returnDate'] ? 'error' : '')
+      label.control-label(for='returnDate') Volta:
+      .controls
+        input#returnDate(type='text', name='returnDate')
+        if errors && errors['returnDate']
+          span.help-inline= errors['returnDate'].message
 
-      label(for='quantity') Quantidade:
-      input#quantity(type='text', name='quantity')
+    .control-group
+      label.control-label(for='quantity') Passageiros:
+      .controls
+        select#quantity(name='quantity')
+          - var n = 1;
+          while n <= 15
+            option= n++
 
     button.btn.btn-primary(type='submit') Procurar
