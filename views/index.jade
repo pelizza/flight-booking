@@ -3,7 +3,7 @@ extends layout
 block content
   h1 Agile Airlines
   p Bem vindo a Agile Airlines! Onde cada vôo é uma entrega de valor :)
-  form(action='/flights', method='post', style='width: 800px; margin: auto; border: 1px solid lightgray; border-radius: 3px; padding: 12px; margin-top: 25px')
+  form(action='/flights', method='post', style='border: 1px solid lightgray; border-radius: 3px; padding: 12px; margin-top: 25px')
     .row
       .form-group.col-xs-6(class=errors && errors['from'] ? 'has-error' : '')
         label.control-label(for='from') De:

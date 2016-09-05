@@ -14,27 +14,11 @@ FlightTicketSearcher.prototype = {
   constructor: FlightTicketSearcher,
 
   getAvailableFlightTickets: function (searchParams) {
-    var quantity = parseInt(searchParams.quantity);
-    var totalPrice = TICKET_BASE_PRICE * quantity;
-    var discount = (quantity - 1) * DISCOUNT_FACTOR_QUANTITY;
-    var departureDate = this._parseDate(searchParams.departureDate);
-
-    if(this._getTodayWithoutHours().add(6, 'months').isSameOrBefore(departureDate)) {
-      discount += DISCOUNT_FACTOR_6_MONTHS;
-    } else if(this._getTodayWithoutHours().add(3, 'months').isSameOrBefore(departureDate)) {
-      discount += DISCOUNT_FACTOR_3_MONTHS;
-    }
-
-    var finalPrice = totalPrice - (totalPrice * (discount/100));
-
-    var flightTickets = [{
-      from: searchParams.from,
-      to: searchParams.to,
-      departureDate: searchParams.departureDate,
-      returnDate: searchParams.returnDate,
-      price: finalPrice
-    }];
-    return flightTickets;
+    if(searchParams.quantity > 10) return [];
+    return [
+      this._createFlightTicket(searchParams.quantity, searchParams.from, searchParams.to, searchParams.departureDate),
+      this._createFlightTicket(searchParams.quantity, searchParams.to, searchParams.from, searchParams.returnDate)
+    ];
   },
 
   validateFields: function (searchParams) {
@@ -44,6 +28,29 @@ FlightTicketSearcher.prototype = {
     this._validateDate(errors, searchParams.departureDate, 'departureDate');
     this._validateDate(errors, searchParams.returnDate, 'returnDate', this._parseDate(searchParams.departureDate));
     return errors;
+  },
+
+  _createFlightTicket: function(quantity, from, to, date) {
+    var quantity = parseInt(quantity);
+    var totalPrice = TICKET_BASE_PRICE * quantity;
+    var discount = (quantity - 1) * DISCOUNT_FACTOR_QUANTITY;
+    var parsedDate = this._parseDate(date);
+
+    if(this._getTodayWithoutHours().add(6, 'months').isSameOrBefore(parsedDate)) {
+      discount += DISCOUNT_FACTOR_6_MONTHS;
+    } else if(this._getTodayWithoutHours().add(3, 'months').isSameOrBefore(parsedDate)) {
+      discount += DISCOUNT_FACTOR_3_MONTHS;
+    }
+
+    var finalPrice = totalPrice - (totalPrice * (discount/100));
+    return {
+      from: from,
+      to: to,
+      date: date,
+      time: '14:00',
+      quantity: quantity,
+      price: finalPrice
+    };
   },
 
   _validateCity: function (errors, city, fieldName, rejectedCity) {

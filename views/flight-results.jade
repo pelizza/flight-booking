@@ -1,27 +1,31 @@
 extends layout
 
 block content
-  h1 Passagens Encontradas
+  h1 Agile Airlines
   if !flightTickets.length
-    div Nenhuma passagem encontrada para os critérios informados :(
+    p Nenhuma passagem encontrada para os critérios informados :(
   else
+    p Foram encontradas #{flightTickets.length} passagens:
     ul.list-group
       each flightTicket in flightTickets
         li.list-group-item
           .row
-            span.col-xs-1.text-right De:
-            span.col-xs-4= flightTicket.from
+            span.col-xs-2.text-right De:
+            span.col-xs-10= flightTicket.from
           .row
-            span.col-xs-1.text-right Para:
-            span.col-xs-4= flightTicket.to
+            span.col-xs-2.text-right Para:
+            span.col-xs-10= flightTicket.to
           .row
-            span.col-xs-1.text-right Ida:
-            span.col-xs-4= flightTicket.departureDate
+            span.col-xs-2.text-right Data:
+            span.col-xs-10= flightTicket.date
           .row
-            span.col-xs-1.text-right Volta:
-            span.col-xs-4= flightTicket.returnDate
+            span.col-xs-2.text-right Hora:
+            span.col-xs-10= flightTicket.time
           .row
-            span.col-xs-1.text-right Valor:
-            span.col-xs-4 R$#{flightTicket.price}
+            span.col-xs-2.text-right Passageiros:
+            span.col-xs-10= flightTicket.quantity
+          .row
+            span.col-xs-2.text-right Valor:
+            span.col-xs-10 R$#{flightTicket.price}
 
   a.btn.btn-default(href="/") Nova busca
