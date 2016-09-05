@@ -28,7 +28,11 @@ block content
             span.col-xs-2.text-right Crianças:
             span.col-xs-10= flightTicket.children
           .row
-            span.col-xs-2.text-right Valor:
-            span.col-xs-10 R$#{flightTicket.price}
+            if flightTicket.price
+              span.col-xs-2.text-right Valor:
+              span.col-xs-10 R$#{flightTicket.price}
+            else
+              span.col-xs-2.text-right Pontos:
+              span.col-xs-10= flightTicket.points
 
   a.btn.btn-default(href="/") Nova busca

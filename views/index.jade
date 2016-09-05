@@ -38,5 +38,11 @@ block content
           - var n = 0;
           while n <= 15
             option(selected=values && values['children'] === (n + '') ? 'selected' : undefined)= n++
+    .row
+      .form-group.col-xs-2
+        .checkbox
+          label
+            input(type="checkbox", name='usePoints', checked=values && values['usePoints'] ? true : false)
+            | Usar pontos
 
     button.btn.btn-primary(type='submit') Procurar

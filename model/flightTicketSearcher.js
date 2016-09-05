@@ -6,6 +6,7 @@ const TICKET_BASE_PRICE_CHILDREN = 100;
 const DISCOUNT_FACTOR_3_MONTHS = 10;
 const DISCOUNT_FACTOR_6_MONTHS = 20;
 const DISCOUNT_FACTOR_QUANTITY = 2;
+const POINT_CONVERSION_RATE = 5;
 const COVERED_CITIES = ['Florianópolis', 'Curitiba', 'Porto Alegre', 'Rio de Janeiro', 'São Paulo', 'Belo Horizonte', 'Vitória'];
 
 function FlightTicketSearcher() {
@@ -17,8 +18,8 @@ FlightTicketSearcher.prototype = {
   getAvailableFlightTickets: function (searchParams) {
     if(searchParams.quantity > 10) return [];
     return [
-      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.from, searchParams.to, searchParams.departureDate),
-      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.to, searchParams.from, searchParams.returnDate)
+      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.from, searchParams.to, searchParams.departureDate, searchParams.usePoints),
+      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.to, searchParams.from, searchParams.returnDate, searchParams.usePoints)
     ];
   },
 
@@ -31,7 +32,7 @@ FlightTicketSearcher.prototype = {
     return errors;
   },
 
-  _createFlightTicket: function(adults, children, from, to, date) {
+  _createFlightTicket: function(adults, children, from, to, date, usePoints) {
     adults = parseInt(adults);
     children = parseInt(children);
     var quantity = adults + children;
@@ -46,15 +47,20 @@ FlightTicketSearcher.prototype = {
     }
 
     var finalPrice = totalPrice - (totalPrice * (discount/100));
-    return {
+    var flightTicket = {
       from: from,
       to: to,
       date: date,
       time: '14:00',
       adults: adults,
-      children: children,
-      price: finalPrice
+      children: children
     };
+    if(usePoints) {
+      flightTicket.points = finalPrice * POINT_CONVERSION_RATE;
+    } else {
+      flightTicket.price = finalPrice;
+    }
+    return flightTicket;
   },
 
   _validateCity: function (errors, city, fieldName, rejectedCity) {
