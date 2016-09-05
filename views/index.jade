@@ -27,10 +27,16 @@ block content
         if errors && errors['returnDate']
           span.help-block= errors['returnDate'].message
       .form-group.col-xs-2
-        label.control-label(for='quantity') Passageiros:
-        select.form-control#quantity(name='quantity')
+        label.control-label(for='adults') Adultos:
+        select.form-control#adults(name='adults')
           - var n = 1;
           while n <= 15
-            option(selected=values && values['quantity'] === (n + '') ? 'selected' : undefined)= n++
+            option(selected=values && values['adults'] === (n + '') ? 'selected' : undefined)= n++
+      .form-group.col-xs-2
+        label.control-label(for='children') Crianças:
+        select.form-control#children(name='children')
+          - var n = 0;
+          while n <= 15
+            option(selected=values && values['children'] === (n + '') ? 'selected' : undefined)= n++
 
     button.btn.btn-primary(type='submit') Procurar

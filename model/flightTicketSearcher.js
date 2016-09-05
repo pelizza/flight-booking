@@ -2,6 +2,7 @@ var _ = require('underscore');
 var moment = require('moment');
 
 const TICKET_BASE_PRICE = 200;
+const TICKET_BASE_PRICE_CHILDREN = 100;
 const DISCOUNT_FACTOR_3_MONTHS = 10;
 const DISCOUNT_FACTOR_6_MONTHS = 20;
 const DISCOUNT_FACTOR_QUANTITY = 2;
@@ -16,8 +17,8 @@ FlightTicketSearcher.prototype = {
   getAvailableFlightTickets: function (searchParams) {
     if(searchParams.quantity > 10) return [];
     return [
-      this._createFlightTicket(searchParams.quantity, searchParams.from, searchParams.to, searchParams.departureDate),
-      this._createFlightTicket(searchParams.quantity, searchParams.to, searchParams.from, searchParams.returnDate)
+      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.from, searchParams.to, searchParams.departureDate),
+      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.to, searchParams.from, searchParams.returnDate)
     ];
   },
 
@@ -30,9 +31,11 @@ FlightTicketSearcher.prototype = {
     return errors;
   },
 
-  _createFlightTicket: function(quantity, from, to, date) {
-    var quantity = parseInt(quantity);
-    var totalPrice = TICKET_BASE_PRICE * quantity;
+  _createFlightTicket: function(adults, children, from, to, date) {
+    var adults = parseInt(adults);
+    var children = parseInt(children);
+    var quantity = adults + children;
+    var totalPrice = TICKET_BASE_PRICE * adults + TICKET_BASE_PRICE_CHILDREN * children;
     var discount = (quantity - 1) * DISCOUNT_FACTOR_QUANTITY;
     var parsedDate = this._parseDate(date);
 
@@ -48,7 +51,8 @@ FlightTicketSearcher.prototype = {
       to: to,
       date: date,
       time: '14:00',
-      quantity: quantity,
+      adults: adults,
+      children: children,
       price: finalPrice
     };
   },
