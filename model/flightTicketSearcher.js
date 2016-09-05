@@ -32,8 +32,8 @@ FlightTicketSearcher.prototype = {
   },
 
   _createFlightTicket: function(adults, children, from, to, date) {
-    var adults = parseInt(adults);
-    var children = parseInt(children);
+    adults = parseInt(adults);
+    children = parseInt(children);
     var quantity = adults + children;
     var totalPrice = TICKET_BASE_PRICE * adults + TICKET_BASE_PRICE_CHILDREN * children;
     var discount = (quantity - 1) * DISCOUNT_FACTOR_QUANTITY;
