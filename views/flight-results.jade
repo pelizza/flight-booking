@@ -10,6 +10,14 @@ block content
       each flightTicket in flightTickets
         li.list-group-item
           .row
+            span.col-xs-2.text-right Categoria:
+            if flightTicket.category === 'standard'
+              span.col-xs-10 Standard
+            else if flightTicket.category === 'silver'
+              span.col-xs-10 Silver
+            else if flightTicket.category === 'gold'
+              span.col-xs-10 Gold
+          .row
             span.col-xs-2.text-right De:
             span.col-xs-10= flightTicket.from
           .row

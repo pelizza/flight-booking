@@ -6,6 +6,8 @@ const TICKET_BASE_PRICE_CHILDREN = 100;
 const DISCOUNT_FACTOR_3_MONTHS = 10;
 const DISCOUNT_FACTOR_6_MONTHS = 20;
 const DISCOUNT_FACTOR_QUANTITY = 2;
+const DISCOUNT_FACTOR_CATEGORY_SILVER = 5;
+const DISCOUNT_FACTOR_CATEGORY_GOLD = 10;
 const POINT_CONVERSION_RATE = 5;
 const COVERED_CITIES = ['Florianópolis', 'Curitiba', 'Porto Alegre', 'Rio de Janeiro', 'São Paulo', 'Belo Horizonte', 'Vitória'];
 
@@ -18,8 +20,8 @@ FlightTicketSearcher.prototype = {
   getAvailableFlightTickets: function (searchParams) {
     if(searchParams.quantity > 10) return [];
     return [
-      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.from, searchParams.to, searchParams.departureDate, searchParams.usePoints),
-      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.to, searchParams.from, searchParams.returnDate, searchParams.usePoints)
+      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.from, searchParams.to, searchParams.departureDate, searchParams.usePoints, searchParams.category),
+      this._createFlightTicket(searchParams.adults, searchParams.children, searchParams.to, searchParams.from, searchParams.returnDate, searchParams.usePoints, searchParams.category)
     ];
   },
 
@@ -32,13 +34,16 @@ FlightTicketSearcher.prototype = {
     return errors;
   },
 
-  _createFlightTicket: function(adults, children, from, to, date, usePoints) {
+  _createFlightTicket: function(adults, children, from, to, date, usePoints, category) {
     adults = parseInt(adults);
     children = parseInt(children);
     var quantity = adults + children;
     var totalPrice = TICKET_BASE_PRICE * adults + TICKET_BASE_PRICE_CHILDREN * children;
     var discount = (quantity - 1) * DISCOUNT_FACTOR_QUANTITY;
     var parsedDate = this._parseDate(date);
+
+    if(category === 'silver') discount += DISCOUNT_FACTOR_CATEGORY_SILVER;
+    else if(category === 'gold') discount += DISCOUNT_FACTOR_CATEGORY_GOLD;
 
     if(this._getTodayWithoutHours().add(6, 'months').isSameOrBefore(parsedDate)) {
       discount += DISCOUNT_FACTOR_6_MONTHS;
@@ -48,6 +53,7 @@ FlightTicketSearcher.prototype = {
 
     var finalPrice = totalPrice - (totalPrice * (discount/100));
     var flightTicket = {
+      category: category,
       from: from,
       to: to,
       date: date,

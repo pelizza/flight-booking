@@ -5,6 +5,17 @@ block content
   p Bem vindo a Agile Airlines! Onde cada vôo é uma entrega de valor :)
   form(action='/flights', method='post', style='border: 1px solid lightgray; border-radius: 3px; padding: 12px; margin-top: 25px')
     .row
+      .form-group.col-xs-12.text-right
+        label.radio-inline
+          input(type='radio', name='category', value='standard', checked=!values || (values && values['category'] === 'standard') ? true : false)
+          | Standard
+        label.radio-inline
+          input(type='radio', name='category', value='silver', checked=values && values['category'] === 'silver' ? true : false)
+          | Silver
+        label.radio-inline
+          input(type='radio', name='category', value='gold', checked=values && values['category'] === 'gold' ? true : false)
+          | Gold
+    .row
       .form-group.col-xs-6(class=errors && errors['from'] ? 'has-error' : '')
         label.control-label(for='from') De:
         input.form-control#from(type='text', name='from', placeholder='Ex: Florianópolis', value=values ? values['from'] : undefined)
